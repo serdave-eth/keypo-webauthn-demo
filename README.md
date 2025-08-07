@@ -32,8 +32,8 @@ A complete Next.js application implementing WebAuthn passkeys authentication wit
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd keypo-backendauth-demo
+git clone https://github.com/serdave-eth/keypo-webauthn-demo.git
+cd keypo-webauthn-demo
 ```
 
 2. Install dependencies:
@@ -101,12 +101,12 @@ Click "Sign Out" to clear your authentication session.
 ## API Endpoints
 
 ### Registration
-- `POST /api/auth/register/begin` - Initialize registration ceremony
-- `POST /api/auth/register/finish` - Complete registration ceremony
+- `POST /api/auth/register/challenge` - Get registration challenge
+- `POST /api/auth/register/verify` - Verify registration response
 
 ### Authentication
-- `POST /api/auth/login/begin` - Initialize authentication ceremony
-- `POST /api/auth/login/finish` - Complete authentication ceremony
+- `POST /api/auth/login/challenge` - Get authentication challenge
+- `POST /api/auth/login/verify` - Verify authentication response
 
 ### Session Management
 - `POST /api/auth/logout` - Sign out user
