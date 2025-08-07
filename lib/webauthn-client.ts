@@ -101,7 +101,7 @@ export class WebAuthnClient {
   /**
    * Register a new passkey
    */
-  async register(): Promise<RegistrationResult> {
+  async register(username?: string): Promise<RegistrationResult> {
     try {
       if (!this.isSupported()) {
         return {
@@ -116,6 +116,9 @@ export class WebAuthnClient {
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+          username: username || undefined,
+        }),
       });
 
       if (!challengeResponse.ok) {

@@ -13,11 +13,15 @@ export async function POST(request: NextRequest) {
 
     logger.logRegistrationAttempt(sessionId, ipAddress, userAgent);
 
+    // Parse the request body to get the username
+    const body = await request.json().catch(() => ({}));
+    const { username: requestedUsername } = body;
+
     const { rpName, rpID, origin } = getWebAuthnConfig();
     
     // Generate a unique user ID for this registration
     const userId = crypto.randomUUID();
-    const userName = `user-${Date.now()}`;
+    const userName = requestedUsername?.trim() || `user-${Date.now()}`;
     
     // Create a temporary user record
     const user = db.createUser({

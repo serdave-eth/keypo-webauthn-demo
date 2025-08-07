@@ -14,6 +14,7 @@ export default function AuthComponent() {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [username, setUsername] = useState('');
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' | 'info' }>({
     text: '',
     type: 'info'
@@ -65,14 +66,23 @@ export default function AuthComponent() {
   };
 
   const handleRegister = async () => {
+    if (!username.trim()) {
+      setMessage({
+        text: 'Please enter a username.',
+        type: 'error'
+      });
+      return;
+    }
+
     setIsLoading(true);
     setMessage({ text: 'Starting registration...', type: 'info' });
 
     try {
-      const result: RegistrationResult = await webAuthnClient.register();
+      const result: RegistrationResult = await webAuthnClient.register(username.trim());
       
       if (result.success && result.user) {
         setUser(result.user);
+        setUsername(''); // Clear the username field
         setMessage({
           text: `Registration successful! Welcome, ${result.user.username || 'User'}!`,
           type: 'success'
@@ -233,9 +243,25 @@ export default function AuthComponent() {
           </div>
         ) : (
           <div className="space-y-4">
+            <div className="space-y-2">
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                Username
+              </label>
+              <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your username"
+                disabled={isLoading}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                maxLength={50}
+              />
+            </div>
+            
             <button
               onClick={handleRegister}
-              disabled={isLoading}
+              disabled={isLoading || !username.trim()}
               className="button button-blue"
             >
               {isLoading ? (
