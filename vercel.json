@@ -1,0 +1,20 @@
+{
+  "env": {
+    "WEBAUTHN_RP_NAME": "@webauthn_rp_name",
+    "WEBAUTHN_RP_ID": "@webauthn_rp_id", 
+    "WEBAUTHN_ORIGIN": "@webauthn_origin",
+    "JWT_SECRET": "@jwt_secret",
+    "JWT_EXPIRATION": "1h",
+    "LOG_LEVEL": "warn"
+  },
+  "build": {
+    "env": {
+      "NODE_ENV": "production"
+    }
+  },
+  "functions": {
+    "app/api/**/*.ts": {
+      "maxDuration": 10
+    }
+  }
+}
